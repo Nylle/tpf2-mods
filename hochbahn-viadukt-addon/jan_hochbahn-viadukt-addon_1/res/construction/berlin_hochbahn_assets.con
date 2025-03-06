@@ -1,0 +1,427 @@
+local vec2 = require "vec2"
+local vec3 = require "vec3"
+local transf = require "transf"
+local constructionutil = require "constructionutil"
+local streetutil = require "streetutil"
+local colliderutil = require "colliderutil"
+
+function data()
+
+return { 
+	type = "ASSET_TRACK",
+	description = {
+		name = _("name_hochbahn_asset"),			
+		description = _("desc_hochbahn_asset"),
+		icon = "ui/construction/berlin_pfeiler_u2.tga"
+	},
+
+	availability = { yearFrom = 1880 },
+	buildMode = "MULTI",
+
+	categories = { "Berlin" },
+	order = 1332,
+	skipCollision = true,
+	autoRemovable = false,	
+	snapping = { 
+		rail = true, 
+		road = true, 
+		water = false 
+	},
+	params = {
+
+		{
+			key = "hochbahn_asset_type",
+			values = {  _("U1"), _("U1 Single"), _("U2"), _("U2 Single"), _("Stone BETA"), _("Stone U2"), _("Brick Wall"), _("U1 Girder"), _("U1 Railing"), _("U1 No Railing"), _("U2 Girder"), _("U2 Railing"), _("U2 No Railing") },
+			defaultIndex = 1,
+		},
+
+		{
+			key = "scale_x",
+			name = _("name_scaleX"),
+  			uiType = "SLIDER",
+			values = {  _("50%"), _("55%"), _("60%"), _("65%"), _("70%"), _("75%"), _("80%"), _("85%"), _("90%"), _("95%"), _("100%"), _("105%"), _("110%"), _("115%"), _("120%"), _("125%"), _("130%"), _("135%"), _("140%"), _("145%"), _("150%"), },
+			defaultIndex = 10,		    
+		},
+		{
+			key = "scale_y",
+			name = _("name_scaleY"),
+  			uiType = "SLIDER",
+			values = {  _("50%"), _("55%"), _("60%"), _("65%"), _("70%"), _("75%"), _("80%"), _("85%"), _("90%"), _("95%"), _("100%"), _("105%"), _("110%"), _("115%"), _("120%"), _("125%"), _("130%"), _("135%"), _("140%"), _("145%"), _("150%"), },
+			defaultIndex = 10,		    
+		},
+		{
+			key = "scale_z",
+			name = _("name_scaleZ"),
+  			uiType = "SLIDER",
+			values = {  _("50%"), _("55%"), _("60%"), _("65%"), _("70%"), _("75%"), _("80%"), _("85%"), _("90%"), _("95%"), _("100%"), _("105%"), _("110%"), _("115%"), _("120%"), _("125%"), _("130%"), _("135%"), _("140%"), _("145%"), _("150%"), },
+			defaultIndex = 10,		    
+		},
+		{
+			key = "offset_x",
+			name = _("name_offsetX"),
+  			uiType = "SLIDER",
+		    values = {  _("-5m"),_("-4.9m"),_("-4.8m"),_("-4.7m"),_("-4.6m"),_("-4.5m"),_("-4.4m"),_("-4.3m"),_("-4.2m"),_("-4.1m"), _("-4m"),_("-3.9m"),_("-3.8m"),_("-3.7m"),_("-3.6m"),_("-3.5m"),_("-3.4m"),_("-3.3m"),_("-3.2m"),_("-3.1m"), _("-3m"),_("-2.9m"),_("-2.8m"),_("-2.7m"),_("-2.6m"),_("-2.5m"),_("-2.4m"),_("-2.3m"),_("-2.2m"),_("-2.1m"), _("-2m"),_("-1.9m"),_("-1.8m"),_("-1.7m"),_("-1.6m"),_("-1.5m"),_("-1.4m"),_("-1.3m"),_("-1.2m"),_("-1.1m"), _("-1m"),_("-0.9m"),_("-0.8m"),_("-0.7m"),_("-0.6m"),_("-0.5m"),_("-0.4m"),_("-0.3m"),_("-0.2m"),_("-0.1m"), _("0"), _("0.1m"),_("0.2m"),_("0.3m"),_("0.4m"),_("0.5m"),_("0.6m"),_("0.7m"),_("0.8m"),_("0.9m"),_("1m"), _("1.1m"),_("1.2m"),_("1.3m"),_("1.4m"),_("1.5m"),_("1.6m"),_("1.7m"),_("1.8m"),_("1.9m"),_("2m"), _("2.1m"),_("2.2m"),_("2.3m"),_("2.4m"),_("2.5m"),_("2.6m"),_("2.7m"),_("2.8m"),_("2.9m"),_("3m"), _("3.1m"),_("3.2m"),_("3.3m"),_("3.4m"),_("3.5m"),_("3.6m"),_("3.7m"),_("3.8m"),_("3.9m"),_("4m"), _("4.1m"),_("4.2m"),_("4.3m"),_("4.4m"),_("4.5m"),_("4.6m"),_("4.7m"),_("4.8m"),_("4.9m"),_("5.0m") },
+			defaultIndex = 50,		    
+		},
+		{
+			key = "offset_y",
+			name = _("name_offsetY"),
+  			uiType = "SLIDER",
+		    values = {  _("-5m"),_("-4.9m"),_("-4.8m"),_("-4.7m"),_("-4.6m"),_("-4.5m"),_("-4.4m"),_("-4.3m"),_("-4.2m"),_("-4.1m"), _("-4m"),_("-3.9m"),_("-3.8m"),_("-3.7m"),_("-3.6m"),_("-3.5m"),_("-3.4m"),_("-3.3m"),_("-3.2m"),_("-3.1m"), _("-3m"),_("-2.9m"),_("-2.8m"),_("-2.7m"),_("-2.6m"),_("-2.5m"),_("-2.4m"),_("-2.3m"),_("-2.2m"),_("-2.1m"), _("-2m"),_("-1.9m"),_("-1.8m"),_("-1.7m"),_("-1.6m"),_("-1.5m"),_("-1.4m"),_("-1.3m"),_("-1.2m"),_("-1.1m"), _("-1m"),_("-0.9m"),_("-0.8m"),_("-0.7m"),_("-0.6m"),_("-0.5m"),_("-0.4m"),_("-0.3m"),_("-0.2m"),_("-0.1m"), _("0"), _("0.1m"),_("0.2m"),_("0.3m"),_("0.4m"),_("0.5m"),_("0.6m"),_("0.7m"),_("0.8m"),_("0.9m"),_("1m"), _("1.1m"),_("1.2m"),_("1.3m"),_("1.4m"),_("1.5m"),_("1.6m"),_("1.7m"),_("1.8m"),_("1.9m"),_("2m"), _("2.1m"),_("2.2m"),_("2.3m"),_("2.4m"),_("2.5m"),_("2.6m"),_("2.7m"),_("2.8m"),_("2.9m"),_("3m"), _("3.1m"),_("3.2m"),_("3.3m"),_("3.4m"),_("3.5m"),_("3.6m"),_("3.7m"),_("3.8m"),_("3.9m"),_("4m"), _("4.1m"),_("4.2m"),_("4.3m"),_("4.4m"),_("4.5m"),_("4.6m"),_("4.7m"),_("4.8m"),_("4.9m"),_("5.0m") },
+			defaultIndex = 50,		    
+		},
+		{
+			key = "offset_z",
+			name = _("name_offsetZ"),
+  			uiType = "SLIDER",
+		    values = {  _("-5m"),_("-4.9m"),_("-4.8m"),_("-4.7m"),_("-4.6m"),_("-4.5m"),_("-4.4m"),_("-4.3m"),_("-4.2m"),_("-4.1m"), _("-4m"),_("-3.9m"),_("-3.8m"),_("-3.7m"),_("-3.6m"),_("-3.5m"),_("-3.4m"),_("-3.3m"),_("-3.2m"),_("-3.1m"), _("-3m"),_("-2.9m"),_("-2.8m"),_("-2.7m"),_("-2.6m"),_("-2.5m"),_("-2.4m"),_("-2.3m"),_("-2.2m"),_("-2.1m"), _("-2m"),_("-1.9m"),_("-1.8m"),_("-1.7m"),_("-1.6m"),_("-1.5m"),_("-1.4m"),_("-1.3m"),_("-1.2m"),_("-1.1m"), _("-1m"),_("-0.9m"),_("-0.8m"),_("-0.7m"),_("-0.6m"),_("-0.5m"),_("-0.4m"),_("-0.3m"),_("-0.2m"),_("-0.1m"), _("0"), _("0.1m"),_("0.2m"),_("0.3m"),_("0.4m"),_("0.5m"),_("0.6m"),_("0.7m"),_("0.8m"),_("0.9m"),_("1m"), _("1.1m"),_("1.2m"),_("1.3m"),_("1.4m"),_("1.5m"),_("1.6m"),_("1.7m"),_("1.8m"),_("1.9m"),_("2m"), _("2.1m"),_("2.2m"),_("2.3m"),_("2.4m"),_("2.5m"),_("2.6m"),_("2.7m"),_("2.8m"),_("2.9m"),_("3m"), _("3.1m"),_("3.2m"),_("3.3m"),_("3.4m"),_("3.5m"),_("3.6m"),_("3.7m"),_("3.8m"),_("3.9m"),_("4m"), _("4.1m"),_("4.2m"),_("4.3m"),_("4.4m"),_("4.5m"),_("4.6m"),_("4.7m"),_("4.8m"),_("4.9m"),_("5.0m") },
+			defaultIndex = 50,		    
+		},
+		{
+			key = "alignTerrain",
+			name = _("name_align"),
+			uiType = "CHECKBOX",
+			values = {"0", "1"},
+			defaultIndex = 0,
+		},
+		{
+			key = "groundFill",
+			name = _("name_ground_fill"),
+			uiType = "CHECKBOX",
+			values = {"0", "1"},
+			defaultIndex = 0,		    
+		},
+		{
+			key = "streetPosV",
+			name = _("name_street_pos"),
+			values = { _("No"), _("name_street_pos_par"), _("name_street_pos_par_2"), _("name_street_pos_tang"), _("name_street_pos_cross"), _("name_street_pos_under") },
+			defaultIndex = 0,		    
+		},
+
+		{
+			key = "height_street",
+			name = _("name_height_street"),
+  			uiType = "SLIDER",
+			values = {   _("-12.5m"), _("-12m"), _("-11.5m"), _("-11m"), _("-10.5m"), _("-10m"), _("-9.5m"), _("-9m"), _("-8.5m"), _("-8m") },
+			defaultIndex = 3,		    
+		}, 
+		{
+		   	key = "tramTrack",
+		    	name = _("name_tram"),
+		    	values = { _("No"), _("Yes"), _("Electric") },
+		    	yearFrom = game.config.tramCatenaryYearFrom,
+		    	yearTo = 0,
+		    	defaultIndex = 0,		
+        	},
+
+
+	},
+
+
+
+	updateFn = function(params)
+		local result = { }
+		local street_edges = {}
+		local street_edges_s = {}
+		local street_edges_m = {}
+		local street_edges_l = {}
+		local street_edges_s1 = {}
+		local street_edges_m1 = {}
+		local trackTypes = { "standard.lua", "high_speed.lua" }
+		local streetTypes = { "standard/town_small_new.lua", "standard/town_medium_new.lua", "standard/town_large_new.lua", "standard/town_medium_one_way_new.lua", "standard/town_large_one_way_new.lua" }
+		local tramTrackTypes = { "NO", "YES", "ELECTRIC" }
+		local terminals = {}
+		local terrainFaces = {}
+		local groundFaces = {}
+
+		local offsetZ = ((params.height_street*0.5) - 12.5)
+
+		local asset_scaleX = 0.5 +(params.scale_x/20)
+		local asset_scaleY = 0.5 +(params.scale_y/20)
+		local asset_scaleZ = 0.5 +(params.scale_z/20)
+
+		local asset_offsetX = -5 + params.offset_x/10
+		local asset_offsetY = -5 + params.offset_y/10
+		local asset_offsetZ = -5 + params.offset_z/10
+
+
+		result.models = { }
+		result.edgeLists = {}
+
+
+		local height = asset_offsetZ -1
+
+
+	
+
+		if params.hochbahn_asset_type == 0 then
+			result.models[#result.models + 1] = { id = "hochbahnviadukt_pillar_u1.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.2, asset_scaleY*1.2, asset_scaleZ*1.2 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX-2.5, height - 10.2)) }
+
+		elseif params.hochbahn_asset_type == 1 then
+			result.models[#result.models + 1] = { id = "hochbahn_pillar_u1.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX+1.5, height - 11.2)) }
+
+		elseif params.hochbahn_asset_type == 2 then
+			result.models[#result.models + 1] = { id = "hochbahnviadukt_pillar_u2.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.2, asset_scaleY*1.2, asset_scaleZ*1.2 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX-2.5, height - 8.5)) }
+
+		elseif params.hochbahn_asset_type == 3 then
+			result.models[#result.models + 1] = { id = "hochbahn_pillar_u2.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX+1.5, height - 9.9)) }
+
+		elseif params.hochbahn_asset_type == 4 then
+			result.models[#result.models + 1] = { id = "hochbahnviadukt_pillar_stone_old.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.325 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX-2.5, height - 9.25)) }
+
+		elseif params.hochbahn_asset_type == 5 then
+			result.models[#result.models + 1] = { id = "hochbahnviadukt_pillar_stone.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*0.8, asset_scaleY*0.8, asset_scaleZ*1.2 ), transf.degToRad(90, 0, 0), vec3.new(asset_offsetY, asset_offsetX-2.5, height - 9.4)) }
+
+		elseif params.hochbahn_asset_type == 6 then
+			result.models[#result.models + 1] = { id = "station/ruhleben/side_block.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleY*1.5, asset_scaleX*1.0, asset_scaleZ*1.5 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY, asset_offsetX, height - 12.5)) }
+
+		elseif params.hochbahn_asset_type == 7 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u1/railing_rep_rep.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX - 2, height + 1)) }
+
+		elseif params.hochbahn_asset_type == 8 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u1/railing_rep_side2.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX + 2, height + 1)) }
+
+		elseif params.hochbahn_asset_type == 9 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u1/railing_rep_side2_no_railing.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX + 2, height + 1)) }
+
+		elseif params.hochbahn_asset_type == 10 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u2/railing_rep_rep.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX - 2, height + 1)) }
+
+		elseif params.hochbahn_asset_type == 11 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u2/railing_rep_side2.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX + 2, height + 1)) }
+
+		elseif params.hochbahn_asset_type == 12 then
+			result.models[#result.models + 1] = { id = "bridge/hochbahn_u2/railing_rep_side2_no_railing.mdl", transf = transf.scaleRotZYXTransl(vec3.new( asset_scaleX*1.0, asset_scaleY*1.0, asset_scaleZ*1.0 ), transf.degToRad(0, 0, 0), vec3.new(asset_offsetY - 5, asset_offsetX + 2, height + 1)) }
+
+		end
+
+
+
+	if params.streetPosV == 1 or params.streetPosV == 3 then
+
+		result.edgeLists = {  
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[3], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_l,
+				snapNodes = { 0, 3 },	
+			},
+		}
+
+
+	elseif params.streetPosV == 5 then
+
+		result.edgeLists = {  
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[2], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_m,
+				snapNodes = { 0, 3 },	
+
+			},
+		}
+
+	elseif params.streetPosV == 6 then
+
+		result.edgeLists = {  
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[3], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_m,
+				snapNodes = { 0, 3 },	
+
+			},
+		}
+
+
+	elseif params.streetPosV == 2 then
+
+		result.edgeLists = {  
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[4], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_m1,
+				snapNodes = { 0, 3, 4, 7 },	
+
+			},
+		}
+
+	elseif params.streetPosV == 4 then
+
+		result.edgeLists = {  
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[4], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_m1,
+				snapNodes = { 0,5,6,11 },	
+
+			}, 
+			{
+				type = "STREET", 
+				alignTerrain = true,
+				params = { type = streetTypes[3], tramTrackType = tramTrackTypes[(params.tramTrack or 0) + 1] },
+				edges = street_edges_l,
+				snapNodes = { 0,7 },	
+
+			},
+		}
+
+	end
+
+
+	local street_offsetY = 11.75
+
+			if params.streetPosV == 1 then
+			--parallel r
+
+				street_edges_l[#street_edges_l + 1] = { { 15, street_offsetY+5, offsetZ }, { -15, 0, 0 } } --0
+				street_edges_l[#street_edges_l + 1] = { { 0, street_offsetY+5, offsetZ }, { -15, 0, 0 } }
+
+				street_edges_l[#street_edges_l + 1] = { { 0, street_offsetY+5, offsetZ }, { -15, 0, 0 } }
+				street_edges_l[#street_edges_l + 1] = { { -15, street_offsetY+5, offsetZ }, { -15, 0, 0 } } --3
+
+
+			elseif params.streetPosV == 2 then
+			--parallel 2x
+
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, street_offsetY, offsetZ }, { -15, 0, 0 } } --0
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, street_offsetY, offsetZ }, { -15, 0, 0 } }
+
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, street_offsetY, offsetZ }, { -15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { -15, street_offsetY, offsetZ }, { -15, 0, 0 } } --3
+
+				street_edges_m1[#street_edges_m1 + 1] = { { -15, -(street_offsetY+5), offsetZ }, { 15, 0, 0 } } --4
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, -(street_offsetY+5), offsetZ }, { 15, 0, 0 } }
+
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, -(street_offsetY+5), offsetZ }, { 15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, -(street_offsetY+5), offsetZ }, { 15, 0, 0 } } --7
+
+
+			elseif params.streetPosV == 3 then
+			--tang
+
+				street_edges_l[#street_edges_l + 1] = { { 12.5, -17.5, offsetZ }, { 0, 15, 0 } } --0
+				street_edges_l[#street_edges_l + 1] = { { 12.5, -2.5, offsetZ }, { 0, 15, 0 } }
+
+				street_edges_l[#street_edges_l + 1] = { { 12.5, -2.5, offsetZ }, { 0, 15, 0 } }
+				street_edges_l[#street_edges_l + 1] = { { 12.5, 12.5, offsetZ }, { 0, 15, 0 } } --3
+
+
+
+			elseif params.streetPosV == 4 then
+			--cross
+
+				street_edges_m1[#street_edges_m1 + 1] = { { 30, 12.5, offsetZ }, { -15, 0, 0 } } --0
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, 12.5, offsetZ }, { -15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, 12.5, offsetZ }, { -15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, 12.5, offsetZ }, { -15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, 12.5, offsetZ }, { -15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { -15, 12.5, offsetZ }, { -15, 0, 0 } } --5
+
+				street_edges_m1[#street_edges_m1 + 1] = { { -15, -17.5, offsetZ }, { 15, 0, 0 } } --6
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, -17.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 0, -17.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, -17.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 15, -17.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m1[#street_edges_m1 + 1] = { { 30, -17.5, offsetZ }, { 15, 0, 0 } } --11
+
+
+
+
+				street_edges_l[#street_edges_l + 1] = { { 15, 22.5, offsetZ }, { 0, -10, 0 } } --0
+				street_edges_l[#street_edges_l + 1] = { { 15, 12.5, offsetZ }, { 0, -10, 0 } }
+
+				street_edges_l[#street_edges_l + 1] = { { 15, 12.5, offsetZ }, { 0, -15, 0 } }
+				street_edges_l[#street_edges_l + 1] = { { 15, -2.5, offsetZ }, { 0, -15, 0 } }
+
+				street_edges_l[#street_edges_l + 1] = { { 15, -2.5, offsetZ }, { 0, -15, 0 } }
+				street_edges_l[#street_edges_l + 1] = { { 15, -17.5, offsetZ }, { 0, -15, 0 } }
+
+				street_edges_l[#street_edges_l + 1] = { { 15, -17.5, offsetZ }, { 0, -10, 0 } }
+				street_edges_l[#street_edges_l + 1] = { { 15, -27.5, offsetZ }, { 0, -10, 0 } } --7
+
+
+
+
+
+
+
+			elseif params.streetPosV == 5 then
+			--under
+
+				street_edges_m[#street_edges_m + 1] = { { -15, -2.5, offsetZ }, { 15, 0, 0 } } --0
+				street_edges_m[#street_edges_m + 1] = { { 0, -2.5, offsetZ }, { 15, 0, 0 } }
+
+				street_edges_m[#street_edges_m + 1] = { { 0, -2.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m[#street_edges_m + 1] = { { 15, -2.5, offsetZ }, { 15, 0, 0 } } --3
+
+
+
+			elseif params.streetPosV == 6 then
+			--under
+
+
+				street_edges_m[#street_edges_m + 1] = { { -15, -2.5, offsetZ }, { 15, 0, 0 } } --0
+				street_edges_m[#street_edges_m + 1] = { { 0, -2.5, offsetZ }, { 15, 0, 0 } }
+
+				street_edges_m[#street_edges_m + 1] = { { 0, -2.5, offsetZ }, { 15, 0, 0 } }
+				street_edges_m[#street_edges_m + 1] = { { 15, -2.5, offsetZ }, { 15, 0, 0 } } --3
+
+
+			end
+
+
+
+
+	-- terrain
+
+
+		local faces_all = {
+			{-20, 7.5, offsetZ, 1.0},
+			{-20, -12.5, offsetZ, 1.0},
+			{20, -12.5, offsetZ, 1.0},
+			{20, 7.5, offsetZ, 1.0},
+		}	
+
+
+	if params.groundFill == 1 then
+
+		-- ground
+			result.groundFaces = { { face = faces_all, modes = { { type = "FILL", key = "shared/gravel_03.gtex.lua" } }, loop = true, alignmentOffsetMode = "OBJECT", alignmentDirMode = "OBJECT", alignmentOffset = { -2.0, -1.0 }, }, }
+
+	end
+
+
+	if params.alignTerrain == 1 then
+
+
+		-- terrain
+			result.terrainAlignmentLists = { { type = "EQUAL", faces = terrainFaces, slopeLow = 1.5 } }
+			terrainFaces[#terrainFaces + 1] =  faces_all 
+
+
+
+	else
+
+		result.terrainAlignmentLists = { {
+			type = "EQUAL",
+			faces =  { }
+		} }
+
+	end
+
+
+
+
+			result.cost = 1000
+
+		return result
+	end		
+}
+
+end

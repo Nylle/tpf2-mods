@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 4.7400007247925, 1.2500016689301, 10.450001716614, },
+		bbMin = { -9.5600004196167, -1.25, -2.0365085617868e-07, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 7.1500005722046, 1.250000834465, 5.2250008583069, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "jan/station/train/era_a/front_exit/material.mtl", },
+						mesh = "jan/station/train/era_a/front_exit/stairs_lod0.msh",
+						name = "stairs",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 2638.107421875,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

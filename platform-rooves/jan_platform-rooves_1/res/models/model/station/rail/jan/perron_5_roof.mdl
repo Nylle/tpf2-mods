@@ -1,0 +1,114 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 2.5, 20.25, 4.6400022506714, },
+		bbMin = { -2.5, -20.25, 0.34622630476952, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 2.5, 20.25, 2.1468880176544, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/roof_lod0.msh",
+						name = "roof",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064481958747, 0, -0.045925982296467, 0, -0.10803248733282, -4.7513508683039e-09, -0.012011987157166, 0, -4.2102510633413e-07, 9.6912879943848, -4.6813216414421e-08, 0, 2.2221601009369, 0, 4.5342202186584, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/column.002_lod0.msh",
+						name = "column",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 20, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064537838101, 2.597632331458e-09, 0.045925982296467, 0, 0.10803248733282, -1.7709190558435e-08, -0.012012000195682, 0, 1.5090367924131e-06, 9.6912879943848, -7.15939620477e-07, 0, -2.2221601009369, 0, 4.5342202186584, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064537838101, -2.597632331458e-09, -0.045925982296467, 0, -0.10803248733282, -1.7709190558435e-08, -0.012012000195682, 0, -1.5090367924131e-06, 9.6912879943848, -7.15939620477e-07, 0, 0.23751200735569, 0, 4.3135299682617, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064537838101, 2.597632331458e-09, 0.045925982296467, 0, 0.10803248733282, -1.7709190558435e-08, -0.012012000195682, 0, 1.5090367924131e-06, 9.6912879943848, -7.15939620477e-07, 0, -0.23751200735569, 0, 4.3135299682617, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064481958747, 0, -0.045925982296467, 0, -0.10803248733282, -4.7513508683039e-09, -0.012011987157166, 0, -4.2102510633413e-07, 9.6912879943848, -4.6813216414421e-08, 0, 1.5599999427795, 0, 4.4606599807739, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064481958747, 0, -0.045925982296467, 0, -0.10803248733282, -4.7513508683039e-09, -0.012011987157166, 0, -4.2102510633413e-07, 9.6912879943848, -4.6813216414421e-08, 0, 0.89999997615814, 0, 4.387179851532, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064537838101, 2.597632331458e-09, 0.045925982296467, 0, 0.10803248733282, -1.7709190558435e-08, -0.012012000195682, 0, 1.5090367924131e-06, 9.6912879943848, -7.15939620477e-07, 0, -1.5599999427795, -1.1908614538925e-08, 4.4606599807739, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/bar_lod0.msh",
+						name = "bar",
+						transf = { 0.0051064537838101, 2.597632331458e-09, 0.045925982296467, 0, 0.10803248733282, -1.7709190558435e-08, -0.012012000195682, 0, 1.5090367924131e-06, 9.6912879943848, -7.15939620477e-07, 0, -0.89999997615814, 1.0585434750965e-08, 4.387179851532, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/column.003_lod0.msh",
+						name = "column",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, -20, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/column.004_lod0.msh",
+						name = "column",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, -1.1373255643082e-16, 10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/column.005_lod0.msh",
+						name = "column",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, -1.8413842469752e-16, -10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/perron_5_roof/material.mtl", },
+						mesh = "station/rail/jan/perron_5_roof/column.006_lod0.msh",
+						name = "column",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 2851.6374511719,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

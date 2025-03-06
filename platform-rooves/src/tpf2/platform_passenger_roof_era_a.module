@@ -1,0 +1,89 @@
+local transf = require "transf"
+local vec3 = require "vec3"
+local modulesutil = require "modulesutil"
+
+function data()
+
+local function GetModelsConfig() 
+	return {
+		perronRoof = "station/rail/era_a/perron_5_roof.mdl",
+		endPerronRoof = "station/rail/era_a/perron_5_roof_end.mdl",
+	}
+end
+
+return { 
+	availability = {
+		yearFrom = 0,
+		yearTo = 1920,
+	},
+	cost = {
+		price = 0,
+	},
+	category = {
+		categories = { "misc", },
+	},
+	description = {
+		name = _("Platform roof"),
+		description = _("Decorative.\nRoof for passenger platforms."),
+		icon = "ui/construction/station/rail/modular_station/platform_passenger_roof_era_a.tga"
+	},
+	-- buildMode = "MULTI",
+	type = "passenger_platform_roof",
+	order = {
+		value = 805,
+	},
+	metadata = {
+		platform_roof = true,
+	},
+	
+	updateFn = function(result, transform, tag, slotId, addModelFn)
+		local modelsConfig = GetModelsConfig()
+		
+		addModelFn(modelsConfig.perronRoof, transf.rotZTransl(math.rad(90), vec3.new(0, -20, -2)))
+		
+		local coords = result.GetCoord(slotId)
+		local i = coords[1]
+		local j = coords[2]
+		
+		if modelsConfig.endPerronRoof then
+			local nextM = result.GetRoofAt(i,j-1)
+			local ca = nextM
+			if not ca then
+				local nextAddonM = result.GetAddonAt(3, -3, i-1)
+				if not nextAddonM or nextAddonM[2] ~= j or not nextAddonM[1].metadata.has_roof then
+					addModelFn(modelsConfig.endPerronRoof, transf.rotZTransl(math.rad(-90), vec3.new(0, -20, -2)))
+				end
+			end
+			local prevM = result.GetRoofAt(i,j+1)
+			local cb = prevM
+			if not cb then
+				local prevAddonM = result.GetAddonAt(4, -3, i-1)
+				if not prevAddonM or prevAddonM[2] ~= j or not prevAddonM[1].metadata.has_roof then
+					addModelFn(modelsConfig.endPerronRoof, transf.rotZTransl(math.rad(90), vec3.new(0, 20, -2)))
+				end
+			end
+		end
+	end,
+	
+	getModelsFn = function()
+		local modelsConfig = GetModelsConfig()
+		local result = {
+			{ 
+				id = modelsConfig.perronRoof,
+				transf = transf.rotZTransl(math.rad(90), vec3.new(0,-20,0)),
+			},
+			{ 
+				id = modelsConfig.endPerronRoof,
+				transf = transf.rotZTransl(math.rad(-90), vec3.new(0,-20,0)),
+			},
+			{ 
+				id = modelsConfig.endPerronRoof,
+				transf = transf.rotZTransl(math.rad(90), vec3.new(0,20,0)),
+			},
+		}
+		
+		return result
+	end
+}
+
+end

@@ -1,0 +1,12 @@
+This mod enables the realistic creation of elevated island-platform stations by adding invisible train station modules with submerged road-connections for 8, 10, and 12 meter elevations.
+
+[h1]How to Use[/h1] 
+[olist]
+    [*]Create a train station on a dam of 8, 10, or 12 meter height (you can use the mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2980796229]Move it![/url]).
+    [*]Configure your station with platforms, underpasses, and tracks.
+    [*]Add Invisible Dam modules on both sides of your station which will make it appear floating. Adjust the module-height with N and M to match your elevation.
+    [*]Now you can add assets to decorate the "floating" station to make it look like on top of a dam. Passengers will be able to use the underpass to exit the station on ground level if you build a road nearby.
+[/olist] 
+
+
+

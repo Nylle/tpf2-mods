@@ -1,0 +1,64 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 4.2999992370605, 0.00037002563476563, 0.63999998569489, },
+		bbMin = { -4.6999988555908, -0.99967384338379, 0, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 4.4999990463257, 0.50002193450928, 0.31999999284744, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_a/borders_1.mtl", },
+						mesh = "station/rail/era_a/stairs/stairs_lod0.msh",
+						name = "stairs",
+						transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 22, 17, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 0,
+		},
+	},
+	metadata = {
+		transportNetworkProvider = {
+			laneLists = {
+				{
+					linkable = false,
+					nodes = {
+						{ { -12.5, -2.5, -8, }, { 0, -2.5, 0, }, 2.4000000953674, },
+						{ { -12.5, -5, -8, }, { 0, -2.5, -8, }, 2.4000000953674, },
+					},
+					speedLimit = 20,
+					transportModes = { "PERSON", },
+				},
+				{
+					linkable = true,
+					nodes = {
+						{ { -17.5, -2.5, -8, }, { 5, 0, 0, }, 2.4000000953674, },
+						{ { -12.5, -2.5, -8, }, { 5, 0, 0, }, 2.4000000953674, },
+						{ { -12.5, -2.5, -8, }, { 5, 0, 0, }, 2.4000000953674, },
+						{ { -7.5, -2.5, -8, }, { 5, 0, 0, }, 2.4000000953674,
+						},
+					},
+					speedLimit = 20,
+					transportModes = { "PERSON", },
+				},
+			},
+			runways = { },
+			terminals = { },
+		},
+	},
+	version = 1,
+}
+end

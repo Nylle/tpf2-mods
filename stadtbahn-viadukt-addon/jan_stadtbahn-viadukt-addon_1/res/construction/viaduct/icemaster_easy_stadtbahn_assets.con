@@ -1,0 +1,651 @@
+local vec2 = require "vec2"
+local vec3 = require "vec3"
+local transf = require "transf"
+local constructionutil = require "constructionutil"
+local paramsutil = require "paramsutil"
+local colliderutil = require "colliderutil"
+local modulesutil = require "modulesutil"
+local zPos = 0
+
+function data()
+    -- Default (no commonapi, no changes to parameters)
+    local paramfn = function(params)
+        return params
+    end
+    -- Do we have commonapi loaded?
+    if ((commonapi2 ~= nil) and (commonapi2.uiparameter ~= nil)) then
+        -- replace paramfn with a function calling commonapi
+        paramfn = function(params)
+            -- you can pass all object parameters for TrackCatenarySelector
+            -- additional a selectionlist to be modifed
+            commonapi2.uiparameter.modifyTrackCatenary(params, {
+                selectionlist = config.trackTypesStadtbahn
+            })
+            commonapi2.uiparameter.modifyTrackCatenary(params, {
+                selectionlist = config.trackTypesStadtbahnPass
+            })
+
+            return params
+        end
+    end
+
+    local function GetModelsConfig()
+        return {
+            coverRoof = "station/train/passenger/bridge_up_station/up_level_railing_rep.mdl",
+
+            perron5a = "ef_hbf_leipzig/perron_a5.mdl",
+            perron5a_underpass = "ef_hbf_leipzig/perron_a5_underpass.mdl",
+            perron5a_end = "ef_hbf_leipzig/perron_a5_end.mdl",
+            perron10a = "ef_hbf_leipzig/perron_a10.mdl",
+            perron10a_end = "ef_hbf_leipzig/perron_a10_end.mdl",
+            perron5b = "ef_hbf_leipzig/perron_b5.mdl",
+            perron5b_underpass = "ef_hbf_leipzig/perron_b5_underpass.mdl",
+            perron5b_end = "ef_hbf_leipzig/perron_b5_end.mdl",
+            perron5c = "ef_hbf_leipzig/perron_c5.mdl",
+            perron5c_underpass = "ef_hbf_leipzig/perron_c5_underpass.mdl",
+            perron5c_end = "ef_hbf_leipzig/perron_c5_end.mdl",
+            perron10c = "ef_hbf_leipzig/perron_c10.mdl",
+            perron10c_end = "ef_hbf_leipzig/perron_c10_end.mdl",
+
+            platform = "ef_hbf_leipzig/tn_passenger_wait_area.mdl",
+
+            viaduct10m = "viaduct/ice_viaduct_arch_10m.mdl",
+            viaduct15m = "viaduct/ice_viaduct_arch_15m.mdl",
+            viaduct20m = "viaduct/ice_viaduct_arch_20m.mdl",
+            viaduct25m = "viaduct/ice_viaduct_arch_25m.mdl",
+            viaduct30m = "viaduct/ice_viaduct_arch_30m.mdl",
+            viaduct35m = "viaduct/ice_viaduct_arch_35m.mdl",
+            viaduct40m = "viaduct/ice_viaduct_arch_40m.mdl",
+            viaduct_zier = "viaduct/ice_viaduct_zier.mdl",
+
+            viaductRailing10m = "viaduct/ice_railing_10m.mdl",
+            viaductRailing15m = "viaduct/ice_railing_15m.mdl",
+            viaductRailing20m = "viaduct/ice_railing_20m.mdl",
+            viaductRailing40m = "viaduct/ice_railing_40m.mdl",
+
+            railing_1 = "viaduct/railing_big1.mdl",
+
+            assetRetainingWall = "asset/sound_insulation_80m_new.mdl",
+
+            assetRetWall10 = "asset/ice_retaining_wall_glas_10m.mdl",
+            assetRetWall20 = "asset/ice_retaining_wall_glas_20m.mdl",
+            assetRetWall60 = "asset/ice_retaining_wall_glas_60m.mdl",
+            assetRetWallGlass40 = "asset/ice_retaining_wall_glas_40m.mdl",
+            assetRetWallGlass45 = "asset/ice_retaining_wall_glas_45m.mdl",
+
+            signNotEnter = "street/sign/do_not_enter_eu_c.mdl",
+            clockNew = "station/rail/asset/era_c_small_clock.mdl",
+            clockOld = "station/rail/asset/era_a_small_clock.mdl",
+            clockNewBig = "station/rail/asset/era_c_big_clock.mdl",
+            clockOldBig = "station/rail/asset/era_a_big_clock.mdl",
+
+            asset_ad1 = "asset/ice_ad_1.mdl",
+            asset_ad2 = "asset/ice_ad_2.mdl",
+            asset_ad3 = "asset/ice_ad_3.mdl",
+            asset_ad4 = "asset/ice_ad_4.mdl",
+            asset_ad5 = "asset/ice_ad_5.mdl",
+
+            assetDirection2 = "station/asset_ex/mp_deko_bahnhofsanzeiger_2.mdl",
+            assetDirection2a = "station/asset_ex/mp_deko_bahnhofsanzeiger_single2a.mdl",
+
+            assetWaitArea = "asset/ice_wait_area.mdl",
+            assetWaitAreaAll = "asset/ice_wait_area_all.mdl",
+            assetTickets = "asset/ice_tickets.mdl",
+            assetTrash = "asset/ice_trash.mdl",
+            assetTimeTable = "asset/ice_timetable.mdl",
+
+            perronNumber12 = "asset/perron_number12.mdl",
+            perronNumber34 = "asset/perron_number34.mdl",
+            perronNumber56 = "asset/perron_number56.mdl",
+            perronNumber58 = "asset/perron_number58.mdl",
+            perronNumber78 = "asset/perron_number78.mdl",
+            perronNumber910 = "asset/perron_number910.mdl",
+
+            perronLettersA = "asset/perron_letters_a.mdl",
+            perronLettersB = "asset/perron_letters_b.mdl",
+            perronLettersC = "asset/perron_letters_c.mdl",
+            perronLettersD = "asset/perron_letters_d.mdl",
+            perronLettersE = "asset/perron_letters_e.mdl",
+            perronLettersF = "asset/perron_letters_f.mdl",
+            perronLettersG = "asset/perron_letters_g.mdl"
+        }
+    end
+
+    return {
+        type = "ASSET_TRACK",
+        description = {
+            name = _("name_asset"),
+            description = _("desc_asset")
+        },
+        availability = {
+            yearFrom = 1882
+        },
+        categories = {"berlin s-bahn"},
+        order = 18700,
+        skipCollision = true,
+        autoRemovable = false,
+        cost = {
+            price = -1,
+            priceScale = 1
+        },
+        params = paramfn({{
+            key = "heightViaductAsset",
+            name = _("name_viaduct_height"),
+            values = {_(" ∞ "), _("8 (Default)"), _("10"), _("12"), _("14"), _("16")},
+            defaultIndex = 0
+        }, {
+            key = "archWidth",
+            name = _("name_asset_arch_width"),
+            values = {_("Block"), _("10"), _("15"), _("20"), _("25"), _("30"), _("Block 2")},
+            defaultIndex = 2
+        }, {
+            key = "assetScaleY",
+            name = _("name_asset_scaleY"),
+            values = {_("-10"), _("-8"), _("-6"), _("-4"), _("-2"), _("0"), _("2"), _("4"), _("6"), _("8"), _("10")},
+            defaultIndex = 5
+        }, {
+            key = "archDeeper",
+            name = _("name_asset_deeper"),
+            uiType = "CHECKBOX",
+            values = {"0", "1"},
+            defaultIndex = 1
+        }, {
+            key = "archType",
+            name = _("name_asset_arch_type"),
+            values = {_("No"), _("name_con0"), _("name_con1"), _("name_con2"), _("name_con3"), _("name_con4"),
+                      _("name_con5"), _("name_con6"), _("name_con7"), _("name_con8")},
+            defaultIndex = 1
+        }, {
+            key = "assetType",
+            name = _("name_asset_type"),
+            values = {_("No"), _("name_asset_typeA"), _("name_asset_typeD"), _("Brick")},
+            defaultIndex = 1
+        }, {
+            key = "assetLogoA",
+            name = _("Extra Asset"),
+            values = {_("No"), _("name_logo"), _("name_clock"), _("name_ad1"), _("name_ad2"), _("name_ad3"),
+                      _("name_ad4"), _("name_ad5")},
+            defaultIndex = 0
+        }}),
+
+        updateFn = function(params, result, transform, addModelFn)
+            local result = {}
+            local edges = {}
+            result.models = {}
+            result.edgeLists = {}
+
+            local archWidth = params.archWidth
+            local archType = params.archType
+            local archDeeper = params.archDeeper
+            local heightViaductAsset = params.heightViaductAsset
+            local assetType = params.assetType
+            local assetLogoA = params.assetLogoA
+            local assetSnap = params.assetSnap
+
+            local heightViaductSide = params.heightViaductSide
+            local streetsStadtbahnS = params.streetsStadtbahnS
+            local streetTypeStadtbahn = params.streetTypeStadtbahn
+            local tramTrack = params.tramTrack
+
+            -- config
+            local heightStadtbahn = 8
+            local heightBaseViaduct = -8
+            local heightModelsStadtbahn = heightStadtbahn - 8
+            local heightViaductAsset = heightBaseViaduct - (params.heightViaductAsset - 1) * 2
+            local heightFaces = heightBaseViaduct
+            local streetTypesStadtbahn = {"standard/town_small_new.lua", "standard/town_medium_new.lua",
+                                          "standard/town_large_new.lua", "standard/town_x_large_new.lua",
+                                          "standard/town_medium_one_way_new.lua", "standard/town_large_one_way_new.lua"}
+            local tramTrackTypes = {"NO", "YES", "ELECTRIC"}
+            local pillarTypeStadtbahn = "empty_bridge.lua"
+            local modelsConfig = GetModelsConfig()
+            local trackSpacing = 0
+            local terrainFaces = {}
+            local baseLength = 0 -- default 0
+            local extraLength = 10 -- will be set
+            local scaleY = params.assetScaleY
+
+            -- 2do
+            local archW = 1
+            local archY = 0
+            local archY = 0
+            local archZ = heightModelsStadtbahn - 7.5
+
+            local railingModel = "viaduct/ice_empty.mdl"
+			local brickRailingMultiplier = 1
+
+            if params.assetScaleY == 5 then
+                scaleY = 1
+            else
+                scaleY = 1 + (params.assetScaleY - 5) * 0.02
+            end
+
+            if params.archWidth == 0 or params.archWidth == 6 then
+                -- 5 "block"
+                archW = 0.251 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_5m_single.mdl"
+				elseif params.assetType == 3 then
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+				else
+                    railingModel = "viaduct/ice_railing_5m_single.mdl"
+                end
+
+            elseif params.archWidth == 1 then
+                -- 10
+                archW = 0.51 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_10m_single.mdl"
+				elseif params.assetType == 3 then
+					brickRailingMultiplier = 2
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+            	else
+                    railingModel = "viaduct/ice_railing_10m_single.mdl"
+                end
+
+            elseif params.archWidth == 2 then
+                -- 15
+                archW = 0.751 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_15m_single.mdl"
+				elseif params.assetType == 3 then
+					brickRailingMultiplier = 3
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+                else
+                    railingModel = "viaduct/ice_railing_15m_single.mdl"
+                end
+
+            elseif params.archWidth == 3 then
+                -- 20
+                archW = 1.02 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_20m_single.mdl"
+				elseif params.assetType == 3 then
+					brickRailingMultiplier = 4
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+	            else
+                    railingModel = "viaduct/ice_railing_20m_single.mdl"
+                end
+
+            elseif params.archWidth == 4 then
+                -- 25
+                archW = 1.253 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_25m_single.mdl"
+				elseif params.assetType == 3 then
+					brickRailingMultiplier = 5
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+                else
+                    railingModel = "viaduct/ice_railing_25m_single.mdl"
+                end
+
+            elseif params.archWidth == 5 then
+                -- 30
+                archW = 1.504 * scaleY
+                if params.assetType == 2 then
+                    railingModel = "viaduct/ice_railing_concrete_30m_single.mdl"
+				elseif params.assetType == 3 then
+					brickRailingMultiplier = 6
+					railingModel = "viaduct/jan_railing_brick_5m.mdl"					
+                else
+                    railingModel = "viaduct/ice_railing_30m_single.mdl"
+                end
+
+            else
+                archW = 0
+            end
+
+            -- faces Stadtbahn OK
+            local faces_all = {{-archW * 10, 2.5, heightViaductAsset, 1.0},
+                               {-archW * 10, -2.5, heightViaductAsset, 1.0},
+                               {archW * 10, -2.5, heightViaductAsset, 1.0}, {archW * 10, 2.5, heightViaductAsset, 1.0}}
+            local faces_baseStadtbahn = {{-archW * 10, 2.5, heightViaductAsset, 1.0},
+                                         {-archW * 10, -2.5, heightViaductAsset, 1.0},
+                                         {archW * 10, -2.5, heightViaductAsset, 1.0},
+                                         {archW * 10, 2.5, heightViaductAsset, 1.0}}
+            local faces_deepStadtbahn = {{-archW * 10, 2.5, heightViaductAsset, 1.0},
+                                         {-archW * 10, -9.5, heightViaductAsset, 1.0},
+                                         {archW * 10, -9.5, heightViaductAsset, 1.0},
+                                         {archW * 10, 2.5, heightViaductAsset, 1.0}}
+
+            ----------------
+            -- Alignment --
+            ----------------
+
+            -- terrain
+            result.terrainAlignmentLists = {{
+                type = "EQUAL",
+                faces = terrainFaces,
+                slopeLow = 1.95
+            }}
+
+            if params.heightViaductAsset ~= 0 and params.archType ~= 0 then
+                -- asset & arch on
+
+                -- terrain
+                if params.archDeeper == 1 then
+                    terrainFaces[#terrainFaces + 1] = faces_deepStadtbahn -- 8-16m under deep
+                else
+                    terrainFaces[#terrainFaces + 1] = faces_baseStadtbahn -- 8-16m under base
+                end
+            end
+
+            if params.archType ~= 0 then
+                -- arch on 
+
+                -- ground
+                if params.archDeeper == 1 then
+                    result.groundFaces = {{
+                        face = faces_deepStadtbahn,
+                        modes = {{
+                            type = "FILL",
+                            key = "shared/gravel_03.gtex.lua"
+                        }},
+                        loop = true,
+                        alignmentOffsetMode = "OBJECT",
+                        alignmentDirMode = "OBJECT",
+                        alignmentOffset = {-2.0, -1.0}
+                    }}
+                else
+                    result.groundFaces = {{
+                        face = faces_baseStadtbahn,
+                        modes = {{
+                            type = "FILL",
+                            key = "shared/gravel_03.gtex.lua"
+                        }},
+                        loop = true,
+                        alignmentOffsetMode = "OBJECT",
+                        alignmentDirMode = "OBJECT",
+                        alignmentOffset = {-2.0, -1.0}
+                    }}
+                end
+
+            end
+
+            -- no model found !?!
+            if params.assetType == 0 and params.archType == 0 and params.assetLogoA == 0 then
+                if params.archWidth ~= 0 and params.archWidth ~= 6 then
+                    result.models[#result.models + 1] = {
+                        id = "asset/icon/marker_question.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(270, 0, 0),
+                            vec3.new(0, 0, -8))
+                    }
+                end
+            end
+
+            if (params.archWidth == 0 or params.archWidth == 6) and params.archType ~= 0 then
+                --		result.models[#result.models + 1] = { id = "asset/icon/marker_question.mdl", transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1 ), transf.degToRad(270, 0, 0), vec3.new(0, 0, -8)) }
+            end
+
+            ----------------
+            -- Extras --
+            ----------------
+
+            -- logo clock
+            if params.assetLogoA == 1 then
+                result.models[#result.models + 1] = {
+                    id = "asset/ice_s_signet_simple.mdl",
+                    transf = transf.scaleRotZYXTransl(vec3.new(1.24, 1, 1), transf.degToRad(90, 0, 0),
+                        vec3.new(0, 3.24, -0.24))
+                }
+            elseif params.assetLogoA == 2 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.clockNew,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1.6, 3.6, 1.6), transf.degToRad(0, 0, 0),
+                        vec3.new(0, 3.04, -0.18))
+                }
+            elseif params.assetLogoA == 3 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.asset_ad1,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(180, 0, 0),
+                        vec3.new(0, 2.2, -8.4))
+                }
+            elseif params.assetLogoA == 4 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.asset_ad2,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(180, 0, 0),
+                        vec3.new(0, 2.2, -8.4))
+                }
+            elseif params.assetLogoA == 5 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.asset_ad3,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(180, 0, 0),
+                        vec3.new(0, 2.2, -7.6))
+                }
+            elseif params.assetLogoA == 6 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.asset_ad4,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(180, 0, 0),
+                        vec3.new(0, 2.2, -8.4))
+                }
+            elseif params.assetLogoA == 7 then
+                result.models[#result.models + 1] = {
+                    id = modelsConfig.asset_ad5,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1, 1, 1), transf.degToRad(180, 0, 0),
+                        vec3.new(0, 2.2, -8.4))
+                }
+
+            end
+
+            ----------------
+            -- all Arches --
+            ----------------
+
+            -- block or arch
+
+            if params.archWidth == 0 then
+                if params.archDeeper == 1 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_block_s.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(1 * scaleY, 1.75, 0.48), transf.degToRad(0, 0, 0), vec3.new(0, -2.82, -3.32))
+                    }
+                else
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_block_s.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(1 * scaleY, 1, 0.48), transf.degToRad(0, 0, 0), vec3.new(0, 0, -3.32))
+                    }
+                end
+
+            elseif params.archWidth == 6 then
+				result.models[#result.models + 1] = {
+					id = "viaduct/jan_v_block_s.mdl",
+					transf = transf.scaleRotZYXTransl(vec3.new(1 * scaleY, 0.8, 1), transf.degToRad(0, 0, 0), vec3.new(0, 0, -7.52))
+				}
+                if params.archDeeper == 1 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/jan_v_block_s.mdl",
+						transf = transf.scaleRotZYXTransl(vec3.new(1 * scaleY, 0.8, 1), transf.degToRad(0, 0, 0), vec3.new(0, -6, -7.52))
+                    }
+                end
+
+            else
+                -- without "5"
+
+                -- arches content
+                if params.archType == 1 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 2 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_brick_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 3 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_brickA_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 4 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_con_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 5 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_mix_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 6 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_dark_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 7 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_garage_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 8 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_ad_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 9 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_glas_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+
+                elseif params.archType == 10 then
+                    result.models[#result.models + 1] = {
+                        id = "viaduct/ice_v_side_light_20m.mdl",
+                        transf = transf.scaleRotZYXTransl(vec3.new(archW, 1, 1), transf.degToRad(0, 0, 0),
+                            vec3.new(0, 0, archZ))
+                    }
+                end
+
+                -- deeper arch
+                if params.archDeeper == 1 and params.archType ~= 0 then
+
+                    if params.archType == 1 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 2 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_brick_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 3 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_brickA_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 4 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_con_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 5 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_mix_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 6 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_dark_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 7 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_garage_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 8 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_ad_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 9 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+
+                    elseif params.archType == 10 then
+                        result.models[#result.models + 1] = {
+                            id = "viaduct/ice_v_side_20m.mdl",
+                            transf = transf.scaleRotZYXTransl(vec3.new(archW, 1.5, 1), transf.degToRad(0, 0, 0),
+                                vec3.new(0, -5, archZ))
+                        }
+                    end
+
+                end
+
+            end
+
+            ----------------
+            -- all Assets --
+            ----------------
+
+            -- assets railing
+
+            if params.assetType == 1 then
+                -- fence
+                result.models[#result.models + 1] = {
+                    id = railingModel,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1.02 * scaleY, 1, 1), transf.degToRad(0, 0, 0), vec3.new(0, 2.1, heightModelsStadtbahn + 0.32))
+                }
+
+            elseif params.assetType == 2 then
+                -- concrete
+                result.models[#result.models + 1] = {
+                    id = railingModel,
+                    transf = transf.scaleRotZYXTransl(vec3.new(1.02 * scaleY, 1, 1), transf.degToRad(0, 0, 0), vec3.new(0, 2.1, heightModelsStadtbahn + 0.32))
+                }
+
+            elseif params.assetType == 3 then
+                -- brick
+
+				local loopStart = ((brickRailingMultiplier - 1) * -2.5) * scaleY
+				local loopEnd = loopStart * -1
+				local loopStep = 5 * scaleY
+				for i = loopStart, loopEnd, loopStep do
+					result.models[#result.models + 1] = {
+						id = railingModel,
+						transf = transf.scaleRotZYXTransl(vec3.new(1 * scaleY, 1, 1), transf.degToRad(180, 0, 0), vec3.new(i, 1.83, heightModelsStadtbahn + 0.12))
+					}
+				end
+            end
+
+            return result
+        end
+    }
+end

@@ -1,0 +1,42 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 0.125, 20.000001907349, 10.000002861023, },
+		bbMin = { -11.997779846191, -20, -3.2584136988589e-06, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 6.0613899230957, 20, 5.0000028610229, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/era_a/invisible_dam.mtl", },
+						mesh = "station/rail/era_a/invisible_dam/wall-10_lod0.msh",
+						name = "Wall",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/era_a/invisible_dam.mtl", },
+						mesh = "station/rail/era_a/invisible_dam/arrow_lod0.msh",
+						name = "Arrow",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0.125, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 4088.4594726563,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

@@ -1,0 +1,36 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 2.5, 1.2983498573303, 2.1000001430511, },
+		bbMin = { -2.5, -1.3750001192093, -0.50000017881393, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 2.5, 1.3366749286652, 1.3000001907349, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "viaduct/jan_v_block_s_material.mtl", },
+						mesh = "viaduct/jan_railing_brick_lod0.msh",
+						name = "railing_brick",
+						transf = { 1, 0, 0, 0, 0, -1.6292068494295e-07, -1, 0, 0, 1, -1.6292068494295e-07, 0, 0, 0, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 739.61254882813,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

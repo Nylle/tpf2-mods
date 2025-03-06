@@ -1,0 +1,28 @@
+local transf = require "transf"
+local vec3 = require "vec3"
+local modulesutil = require "modulesutil"
+local jidutil = require "jan-invisible_dam"
+
+function data()
+	return { 
+		availability = { yearFrom = 0, yearTo = 0, },
+		cost = { price = 0, },
+		description = {
+			name = _("Left Centre Dam Entrance"),
+			description = _("Left centre dam entrance for elevated stations.\nUse N and M to cycle through predefined heights."),
+			icon = "ui/construction/station/rail/modular_station/submerged_entrance-left-centre.tga"
+		}, 
+		category = {
+			categories = { "Invisible Dam", },
+		},
+		type = "passenger_platform",
+		order = {
+			value = 700,
+		},
+		metadata = {
+			platform = true,
+		},
+		updateFn = jidutil.CreateUpdateFn("left", "centre"),
+		getModelsFn = jidutil.CreateGetModelsFn("left", "centre")
+	}
+end

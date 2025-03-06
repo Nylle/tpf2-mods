@@ -1,0 +1,66 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 2.5, 1.5, 1.8, },
+		bbMin = { -2.5, -1.25, -0.8, },
+	},
+	collider = {
+		params = { },
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "MESH",
+	},
+	lods = {
+		{
+			node = {
+				animations = { },
+				children = {
+
+-- railing concrete
+
+					{
+						_meshId = 1,
+						_origMeshId = 1,
+						materials = { "mp_colours_beton_putz_1.mtl", },
+						mesh = "viaduct/vgotikbruestung1k_ljf0.msh",
+						name = "MSH_vgotikbruestung1k_ljf0_1",
+						transf = { 0.4508, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0.72, 0, 0, 0.5, -12.56, 1, },
+					},
+
+--1994
+					{
+						_meshId = 1,
+						_origMeshId = 1,
+						materials = { "mp_colours_beton_putz_1.mtl", },
+						mesh = "viaduct/vgotikbruestung1m_ljf0.msh",
+						name = "MSH_vgotikbruestung1m_ljf0_1",
+						transf = { 0.23, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0.5, 0, 0, 0, -9.65, 1, },
+					},
+--[[
+--railing a1
+					{
+						_meshId = 1,
+						_origMeshId = 1,
+						materials = { "industry/quarry/wall_1.mtl", "mp_colours_beton_putz_1.mtl", },
+						mesh = "viaduct/stone_strnew_rs_ljf0.msh",
+						name = "MSH_stone_strnew_rs_ljf0_10",
+						transf = { 0.846, -0, 0, 0, 0, -0.55, 0, 0, 0, 0, 1.1, 0, 0, 0.75, 0, 1, },
+					},
+]]
+
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 1800,
+		},
+	},
+	metadata = {
+		cost = {
+			price = -1,
+		},
+	},
+	version = 1,
+}
+end
