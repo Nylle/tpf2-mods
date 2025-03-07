@@ -1,0 +1,28 @@
+Dieser Mod erlaubt es, realistische Damm-Stationen mit Inselbahnsteig zu bauen, indem unsichtbare Damm-Module mit Straßenzugang in 8, 10 oder 12 Metern Tiefe hinzugefügt werden.
+
+[h1]Bauanleitung[/h1] 
+[olist]
+    [*]Baue einen Bahnhof auf einem Damm von 8, 10 oder 12 m Höhe (der Mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2980796229]Move it![/url] hilft dabei).
+    [*]Füge alle erwünschten Module hinzu (Bahnsteig, Gleise, Unterführungen).
+    [*]Füge unsichtbare Damm-Module aus der Kategorie [b]Invisible Dam[/b] auf beiden Seiten hinzu, was dazu führt, daß der Bahnhof danach zu schweben scheint. Die Höhe kann für ein ausgewähltes Modul mit den Tasten N und M durchgeschaltet werden.
+    [*]Füge nun Assets Deiner Wahl hinzu und dekoriere die schwebende Station so daß sie aussieht, als wäre sie auf einem Viadukt. Passagiere können mit Hilfe von Unterführungen den Bahnhof auf Bodenhöhe verlassen, wenn eine Straße angewschlossen ist.
+[/olist] 
+
+[h1]Merkmale[/h1]
+[list]
+    [*]Drei Höhen werden unterstützt: 8, 10 und 12 m. Wähle die Höhe mit den Tasten N und M aus, wenn Du das Modul hinzufügst.
+    [*]Du hast die Wahl zwischen vier Modul-Konfigurationen für jede Seite: Ausgang vorn, Ausgang mittig, Ausgang hinten, kein Ausgang.
+    [*]Die Tiefe jedes Moduls paßt sich automatisch an die Anzahl benachbarter Module an, um Bahnhöfe mit mehreren Bahnsteigen oder Durchgangsgleisen zu bauen. Der Damm des letzten Moduls bleibt immer erhalten, um einseitige Viadukte zu ermöglichen.
+    [*]Die Bodentextur unter dem Bahnhof kann übermalt werden, wenn dabei die Umschalt-Taste (Shift) gehalten wird.
+[/list] 
+
+[h1]Einschränkungen[/h1]
+[list]
+    [*]Das Standard-Unterführungsmodul schneidet einb Loch in den Untergrund; warum weiß ich nicht. Dieses Loch ist unter der schwebenden Station sichtbar und muß vom Benutzer überdeckt werden, z.B. mit dem Mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2472240787]Floor Shapes Asset[/url]. [i](Ich habe in Erwägung gezogen, ein Bodenmodell hinzuzufügen, das das Loch verdeckt, aber dies würde eine Bodentextur erzwingen die nicht übermalbar wäre.)[/i]
+    [*]Der Boden um den schwebenden Bahnhof wird erhöht sein aufgrund der Spielmechanik. Durch das Bauen von Straßen oder anderen Konstruktionen kann das wie überall im Spiel eingeebenet werden. [i](Ursprünglich habe ich den Boden unter dem Bahnhof so stark erweitert, daß alle Erhebungen geglättet sind. Allerdings verhindert dies das Anschließen eines Bahndammes an die Station oder das Bauen anderer erhöhter Konstruktionen in der näheren Umgebung.)[/i] 
+    [*]Zwischen den Gleisen und Bahnsteigen werden Spalten zu sehen sein, die durch dekorative Assets verdeckt werden müssen.
+    [*]Wenn mit Hilfe des Mods [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2660921894]Build With Collision[/url] Straßen, Gleise oder andere Bahnhöfe unter dem "schwebenden" Bahnhof gebaut werden, kann er nachträglich nicht mehr editiert werden, da es zu Kollisionen kommt.
+[/list] 
+
+[h1]Quellcode[/h1]
+Alle Dateien, Assets und Skripte sind unter der [url=https://www.gnu.org/licenses/gpl-3.0.de.html]GPL-v3[/url]-Lizenz auf [url=https://github.com/Nylle/tpf2-mods/tree/master/invisible-dam-station-modules/jan_invisible-dam-station-modules_1]GitHub[/url] zu finden.
