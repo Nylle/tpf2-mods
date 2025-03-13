@@ -41,6 +41,16 @@ function stationUtil.HasUnderpass(result, coords)
     return false
 end
 
+---Returns whether the platform has a track on side.
+---@param result table result provided in updateFn()
+---@param coords table coords provided in updateFn()
+---@param side integer left=-1, right=1
+---@return boolean
+function stationUtil.HasTrack(result, coords, side)
+    local neighbour = result.GetModuleAt(coords[1] + side, coords[2])
+    return neighbour and neighbour.metadata and neighbour.metadata.track
+end
+
 ---Returns the height of the platform surface above ground.
 -- This function checks the parent-module for metadata in case it is a platform by lennardo97 from the mod "Station Expansion 1.5" (2081662552). 
 -- Otherwise it returns the vanilla platform height.
@@ -98,27 +108,36 @@ function stationUtil.AddPlatformNumberSigns(result, coords, tag, offsetX, offset
     local j = coords[2]
     local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
 
+    local leftTrack = stationUtil.HasTrack(result, coords, -1)
+    local rightTrack = stationUtil.HasTrack(result, coords, 1)
+
     local num1 = #result.models
     result.addPlatformCallback(i, j, function(left, n, station)
         local ns = tostring(n)
-        if left then
+        if left and leftTrack then
+            result.labelText[num1 + 1] = {ns, ns}
+        elseif left then
             result.labelText[num1 + 0] = {ns, ns}
         else
-            result.labelText[num1 + 1] = {ns, ns}
+            result.labelText[num1 + 0] = {ns, ns}
         end
     end)
 
-    core.Add(result.models, {
-        id = "station/rail/asset/era_a_perron_number.mdl",
-        tag = tag,
-        transf = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
-    })
-    core.Add(result.models, {
-        id = "station/rail/asset/era_a_perron_number.mdl",
-        tag = tag,
-        transf = {-1, 0, 0, 0, -0, -1, 0, 0, 0, 0, 1, 0, (5 * i) - offsetX, (40 * j) + offsetY,
-                  platformHeight + offsetZ, 1}
-    })
+
+    if(leftTrack) then
+        core.Add(result.models, {
+            id = "station/rail/asset/era_a_perron_number.mdl",
+            tag = tag,
+            transf = {-1, 0, 0, 0, -0, -1, 0, 0, 0, 0, 1, 0, (5 * i) - offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        })
+    end
+    if(rightTrack) then
+        core.Add(result.models, {
+            id = "station/rail/asset/era_a_perron_number.mdl",
+            tag = tag,
+            transf = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        })
+    end
 end
 
 ---Adds station-name sign with platformCallback
@@ -164,9 +183,38 @@ function stationUtil.AddClock(result, coords, tag, offsetX, offsetY, offsetZ)
     core.Add(result.models, {
         id = "station/rail/asset/era_a_small_clock.mdl",
         tag = tag,
-        transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY,
-                  platformHeight + offsetZ, 1}
+        transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
     })
+end
+
+---Adds a pair of clocks
+---@param result table result provided in updateFn()
+---@param slotId table coordinates of the module
+---@param tag string
+---@param offsetX float x-distance from center of platform 
+---@param offsetY float y-distance from center of platform 
+---@param offsetZ float z-distance from platform surface
+---@return void
+function stationUtil.AddClocks(result, coords, tag, offsetX, offsetY, offsetZ)
+    local i = coords[1]
+    local j = coords[2]
+    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+
+    if(stationUtil.HasTrack(result, coords, 1)) then
+        core.Add(result.models, {
+            id = "station/rail/asset/era_a_small_clock.mdl",
+            tag = tag,
+            transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        })
+    end
+
+    if(stationUtil.HasTrack(result, coords, -1)) then
+        core.Add(result.models, {
+            id = "station/rail/asset/era_a_small_clock.mdl",
+            tag = tag,
+            transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) - offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        })
+    end
 end
 
 ---Adds trash can

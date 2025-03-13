@@ -41,8 +41,8 @@ function data()
             stationutil.RemoveExistingAssets(result, slotId)
 
             stationutil.AddButterflyRoof(result, coords, tag, 0, 0, 0)
-            stationutil.AddClock(result, coords, tag, 2, 0, 3.12)
-            stationutil.AddClock(result, coords, tag, -2, 0, 3.12)
+            stationutil.AddClocks(result, coords, tag, 2, 0, 3.12)
+            --stationutil.AddClock(result, coords, tag, -2, 0, 3.12)
 
             if (stationutil.IsLennardo97Platform(result, coords)) then
                 stationutil.AddPlatformNumberSigns(result, coords, tag, 0.2, 0, 2.50)
