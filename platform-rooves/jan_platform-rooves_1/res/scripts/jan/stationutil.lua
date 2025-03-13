@@ -41,7 +41,7 @@ function stationUtil.HasUnderpass(result, coords)
     return false
 end
 
----Returns whether the platform has a track on side.
+---Returns whether the platform has a track on the specified side.
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@param side integer left=-1, right=1
@@ -49,6 +49,38 @@ end
 function stationUtil.HasTrack(result, coords, side)
     local neighbour = result.GetModuleAt(coords[1] + side, coords[2])
     return neighbour and neighbour.metadata and neighbour.metadata.track
+end
+
+---Returns whether the next adjacent platform has a roof.
+---@param result table result provided in updateFn()
+---@param coords table coords provided in updateFn()
+---@return boolean
+function stationUtil.HasRoofNext(result, coords)
+    local i = coords[1]
+    local j = coords[2]
+    if not result.GetRoofAt(i, j - 1) then
+        local nextAddonModule = result.GetAddonAt(3, -3, i - 1)
+        if not nextAddonModule or nextAddonModule[2] ~= j or not nextAddonModule[1].metadata.has_roof then
+            return false
+        end
+    end
+    return true
+end
+
+---Returns whether the previous adjacent platform has a roof.
+---@param result table result provided in updateFn()
+---@param coords table coords provided in updateFn()
+---@return boolean
+function stationUtil.HasRoofPrevious(result, coords)
+    local i = coords[1]
+    local j = coords[2]
+    if not result.GetRoofAt(i, j + 1) then
+        local prevAddonModule = result.GetAddonAt(4, -3, i - 1)
+        if not prevAddonModule or prevAddonModule[2] ~= j or not prevAddonModule[1].metadata.has_roof then
+            return false
+        end
+    end
+    return true
 end
 
 ---Returns the height of the platform surface above ground.
@@ -71,12 +103,17 @@ end
 ---@param slotId integer slotId of the module to remove assets from
 ---@return void
 function stationUtil.RemoveExistingAssets(result, slotId)
-    local assetsToRemove = {"street/street_light_eu_a.mdl", "street/street_asset_mix/trash_standing_a.mdl",
-                            "station/rail/asset/era_a_double_chair.mdl", "station/rail/asset/era_a_holder_wall.mdl",
-                            "station/rail/asset/era_a_perron_pillar.mdl", "station/rail/asset/era_a_perron_number.mdl",
-                            "station/rail/asset/era_a_station_name.mdl", "station/rail/asset/era_a_small_clock.mdl",
-                            "station/rail/lennardo97_platforms/asset/sign_era_a_name.mdl",
-                            "station/rail/lennardo97_platforms/asset/sign_era_a_number.mdl"}
+    local assetsToRemove = {
+        "street/street_light_eu_a.mdl", 
+        "street/street_asset_mix/trash_standing_a.mdl",
+        "station/rail/asset/era_a_double_chair.mdl", 
+        "station/rail/asset/era_a_holder_wall.mdl",
+        "station/rail/asset/era_a_perron_pillar.mdl", 
+        "station/rail/asset/era_a_perron_number.mdl",
+        "station/rail/asset/era_a_station_name.mdl", 
+        "station/rail/asset/era_a_small_clock.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_a_name.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_a_number.mdl"}
 
     local moduleId = stationUtil.FindModuleForSlot(result, slotId)
 
@@ -162,8 +199,7 @@ function stationUtil.AddStationNameSign(result, coords, tag, offsetX, offsetY, o
     core.Add(result.models, {
         id = "station/rail/asset/era_a_station_name.mdl",
         tag = tag,
-        transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ,
-                  1}
+        transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
     })
 end
 
@@ -233,8 +269,7 @@ function stationUtil.AddTrashCan(result, coords, tag, offsetX, offsetY, offsetZ)
     core.Add(result.models, {
         id = "street/street_asset_mix/trash_standing_a.mdl",
         tag = tag,
-        transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ,
-                  1}
+        transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
     })
 end
 
@@ -258,30 +293,14 @@ function stationUtil.AddBench(result, coords, tag, offsetX, offsetY, offsetZ)
     })
 end
 
-function stationUtil.HasRoofNext(result, coords)
-    local i = coords[1]
-    local j = coords[2]
-    if not result.GetRoofAt(i, j - 1) then
-        local nextAddonModule = result.GetAddonAt(3, -3, i - 1)
-        if not nextAddonModule or nextAddonModule[2] ~= j or not nextAddonModule[1].metadata.has_roof then
-            return false
-        end
-    end
-    return true
-end
-
-function stationUtil.HasRoofPrevious(result, coords)
-    local i = coords[1]
-    local j = coords[2]
-    if not result.GetRoofAt(i, j + 1) then
-        local prevAddonModule = result.GetAddonAt(4, -3, i - 1)
-        if not prevAddonModule or prevAddonModule[2] ~= j or not prevAddonModule[1].metadata.has_roof then
-            return false
-        end
-    end
-    return true
-end
-
+---Adds the butterfly-shaped roof
+---@param result table result provided in updateFn()
+---@param slotId table coordinates of the module
+---@param tag string
+---@param offsetX float x-distance from center of platform 
+---@param offsetY float y-distance from center of platform 
+---@param offsetZ float z-distance from platform surface
+---@return void
 function stationUtil.AddButterflyRoof(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
