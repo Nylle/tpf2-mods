@@ -1,0 +1,42 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 3, 21, 4.2600035667419, },
+		bbMin = { -3, -20, 0, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 3, 20.5, 2.130001783371, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/roof5_end_lod0.msh",
+						name = "Roof5_end",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 20.5, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/bars5_end_lod0.msh",
+						name = "Bars5_end",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 20.5, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 3042.7551269531,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

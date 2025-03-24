@@ -1,0 +1,202 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 3, 21, 4.2600035667419, },
+		bbMin = { -3, -20, 0, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 3, 20.5, 2.130001783371, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/roof5_lod0.msh",
+						name = "Roof5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/bars5_lod0.msh",
+						name = "Bars5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, },
+					},
+
+					-- -20m
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/beam5_lod0.msh",
+						name = "Beam5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, -20, 4.1289234161377, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -2.0567800998688, -20, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 2.0567800998688, -20, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 1.5760601758957, -20, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -1.5760601758957, -20, 0, 1, },
+					},
+
+					-- -10m
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/beam5_lod0.msh",
+						name = "Beam5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, -10, 4.1289234161377, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -2.0567800998688, -10, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 2.0567800998688, -10, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 1.5760601758957, -10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -1.5760601758957, -10, 0, 1, },
+					},
+
+					-- 0m
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/beam5_lod0.msh",
+						name = "Beam5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 4.1289234161377, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -2.0567800998688, 0, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 2.0567800998688, 0, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 1.5760601758957, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -1.5760601758957, 0, 0, 1, },
+					},
+
+					-- 10m
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/beam5_lod0.msh",
+						name = "Beam5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 10, 4.1289234161377, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -2.0567800998688, 10, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 2.0567800998688, 10, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 1.5760601758957, 10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -1.5760601758957, 10, 0, 1, },
+					},
+					
+					-- 20m
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/beam5_lod0.msh",
+						name = "Beam5",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 20, 4.1289234161377, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -2.0567800998688, 20, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/capital_lod0.msh",
+						name = "Capital",
+						transf = { -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 2.0567800998688, 20, 3.6975800991058, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 1.5760601758957, 20, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_schoeneweide.mtl", },
+						mesh = "station/rail/jan/roof_schoeneweide/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, -1.5760601758957, 20, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 3042.7551269531,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end
