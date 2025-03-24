@@ -1,0 +1,89 @@
+local transf = require "transf"
+local vec3 = require "vec3"
+local modulesutil = require "modulesutil"
+local constructionutil = require "constructionutil"
+local stationutil = require "jan/stationutil"
+local core = require "jan/core"
+
+function data()
+    return {
+        availability = {
+            yearFrom = 0,
+            yearTo = 0
+        },
+        cost = {
+            price = 0
+        },
+        category = {
+            categories = {"misc"}
+        },
+        description = {
+            name = _("Platform Roof \"Grünau\""),
+            description = _("Platform roof \"Grünau\" for passenger platforms.\nUse N and M to toggle between 5 m (standard) and 6 m width (wide)"),
+            icon = "ui/construction/station/rail/jan/roof_gruenau_ui.tga"
+        },
+        type = "passenger_platform_roof",
+        order = {
+            value = 805
+        },
+        metadata = {
+            platform_roof = true,
+            ld97era = "jan"
+        },
+
+        updateFn = function(result, transform, tag, slotId, addModelFn, params)
+            local coords = result.GetCoord(slotId)
+            local i = coords[1]
+            local j = coords[2]
+
+            local roofWidth = 5
+            if stationutil.ResolveVariant(slotId, params, 2) == 1 then
+                roofWidth = 6
+            end
+            local offsetFactor = roofWidth/5
+
+            local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+
+            stationutil.RemoveExistingAssets(result, slotId)
+            stationutil.AddRoofGruenau(result, coords, tag, 0, 0, 0, roofWidth)
+            stationutil.AddClocks(result, coords, tag, 2 * offsetFactor, 0, 3.12)
+            if (stationutil.IsLennardo97Platform(result, coords)) then
+                stationutil.AddPlatformNumberSigns(result, coords, tag, 0.2 * offsetFactor, 0, 2.50)
+                stationutil.AddStationNameSign(result, coords, tag, 0, -17.5, 0)
+            else
+                stationutil.AddPlatformNumberSigns(result, coords, tag, 0.2 * offsetFactor, 10, 2.50)
+                stationutil.AddPlatformNumberSigns(result, coords, tag, 0.2 * offsetFactor, -10, 2.50)
+                stationutil.AddStationNameSign(result, coords, tag, 0, -12.5, 0)
+                stationutil.AddTrashCan(result, coords, tag, 0, 14, 0)
+                stationutil.AddTrashCan(result, coords, tag, 0, -15, 0)
+                stationutil.AddBench(result, coords, tag, 0, 16, 0)
+                stationutil.AddBench(result, coords, tag, 0, -17, 0)
+                if(stationutil.HasUnderpass(result, coords)) then
+                    stationutil.AddTrashCan(result, coords, tag, 0.75, 2.5, 0)
+                    stationutil.AddTrashCan(result, coords, tag, -0.75, -2.5, 0)
+                else
+                    stationutil.AddStationNameSign(result, coords, tag, 0, 6.5, 0)
+                    stationutil.AddBench(result, coords, tag, 0, 2, 0)
+                    stationutil.AddBench(result, coords, tag, 0, -2, 0)
+                end
+            end
+        end,
+
+        getModelsFn = function(params)
+            local scale = vec3.new(1, 1, 1)
+            if stationutil.ResolveVariant(nil, params, 2) == 1 then
+                scale.x = 6/5
+            end
+            return {{
+                id = "station/rail/jan/roof_gruenau.mdl",
+                transf = transf.scaleXYZRotZTransl(scale, math.rad(0), vec3.new(0, 0, 0))
+            }, {
+                id = "station/rail/jan/roof_gruenau_end.mdl",
+                transf = transf.scaleXYZRotZTransl(scale, math.rad(180), vec3.new(0, 0, 0))
+            }, {
+                id = "station/rail/jan/roof_gruenau_end.mdl",
+                transf = transf.scaleXYZRotZTransl(scale, math.rad(0), vec3.new(0, 0, 0))
+            }}
+        end
+    }
+end

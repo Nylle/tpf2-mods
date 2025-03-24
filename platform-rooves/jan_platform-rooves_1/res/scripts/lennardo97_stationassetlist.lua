@@ -477,8 +477,9 @@ function lsa.waitingArea(textureString, platformheight, roofType) --für Era A/B
 			},
 		}
 	elseif era=="b" and not roofType then 
+		local clockId = janRoof and "empty.mdl" or "station/rail/asset/era_a_small_clock.mdl"
 		models = {
-			["station/rail/asset/era_a_small_clock.mdl"] = {
+			[clockId] = {
 				{ -0.00000, 0.80000, 0.00000, 0.00000,
 				-0.80000, -0.00000, -0.00000, 0.00000,
 				0.00000, -0.00000, 0.80000, 0.00000,

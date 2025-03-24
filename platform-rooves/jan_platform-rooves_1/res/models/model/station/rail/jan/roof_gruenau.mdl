@@ -1,0 +1,72 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 2.5, 20, 4.2600021362305, },
+		bbMin = { -2.5, -20, -0.033773701637983, },
+	},
+	collider = {
+		params = {
+			halfExtents = { 2.5, 20, 2.1468880176544, },
+		},
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "BOX",
+	},
+	lods = {
+		{
+			node = {
+				children = {
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/roof_lod0.msh",
+						name = "Roof",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/bars_lod0.msh",
+						name = "Bars",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, -20, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, -10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 10, 0, 1, },
+					},
+					{
+						materials = { "station/rail/jan/roof_gruenau.mtl", },
+						mesh = "station/rail/jan/roof_gruenau/column_lod0.msh",
+						name = "Column",
+						transf = { 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 20, 0, 1, },
+					},
+				},
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 2876.3168945313,
+		},
+	},
+	metadata = { },
+	version = 1,
+}
+end

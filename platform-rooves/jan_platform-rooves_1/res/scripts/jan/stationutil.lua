@@ -1,16 +1,27 @@
+local transf = require "transf"
 local core = require "jan/core"
 
-local stationUtil = {}
+local stationutil = {}
+
+---Returns the selected variant out of a maximum of maxVariants or 0 if none present.
+---@param slotId integer slotId of the slot to find the module for
+---@param params table params provided in updateFn()
+---@return integer
+function stationutil.ResolveVariant(slotId, params, maxVariants)
+    local variants = (slotId ~= nil and params.modules[slotId].variant or params.variant)
+    if(variants == nil) then
+        return 0
+    end
+    return variants % maxVariants
+end
 
 ---Returns the moduleId for the specified slotId or nil if not found.
 ---@param result table result provided in updateFn()
 ---@param slotId integer slotId of the slot to find the module for
 ---@return string
-function stationUtil.FindModuleForSlot(result, slotId)
+function stationutil.FindModuleForSlot(result, slotId)
     for k, v in pairs(result.dependentSlots) do
-        if core.Some(v, function(x)
-            return x == slotId
-        end) then
+        if core.Some(v, function(x) return x == slotId end) then
             return k
         end
     end
@@ -21,7 +32,7 @@ end
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@return boolean
-function stationUtil.IsLennardo97Platform(result, coords)
+function stationutil.IsLennardo97Platform(result, coords)
     local parent = result.GetModuleAt(coords[1], coords[2])
     if (parent and parent.metadata and parent.metadata.lennardo97_station) then
         return true
@@ -29,13 +40,30 @@ function stationUtil.IsLennardo97Platform(result, coords)
     return false
 end
 
+---Returns the era string of the platform at the provided coordinates (e.g. "era_a").
+---@param result table result provided in updateFn()
+---@param coords table coords provided in updateFn()
+---@return string
+function stationutil.ResolveEra(result, coords)
+    local parent = result.GetModuleAt(coords[1], coords[2])
+    if (parent and parent.metadata and parent.metadata.platformtexture) then
+        return parent.metadata.platformtexture:match("era_(%a)")
+    end
+    return true and parent.name:match("_era_(%a)%.module") or "a"
+end
+
 ---Returns whether the platform at the provided coordinates has an underpass.
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@return boolean
-function stationUtil.HasUnderpass(result, coords)
+function stationutil.HasUnderpass(result, coords)
+    local underpasses = {
+        "station/rail/modular_station/platform_passenger_stairs_era_a.module",
+        "station/rail/modular_station/platform_passenger_stairs_era_b.module",
+        "station/rail/modular_station/platform_passenger_stairs_era_c.module"
+    }
     local parent = result.GetModuleAt(coords[1], coords[2])
-    if parent and parent.name == "station/rail/modular_station/platform_passenger_stairs_era_a.module" then
+    if parent and core.Some(underpasses, function(x) return x == parent.name end) then
         return true
     end
     return false
@@ -46,7 +74,7 @@ end
 ---@param coords table coords provided in updateFn()
 ---@param side integer left=-1, right=1
 ---@return boolean
-function stationUtil.HasTrack(result, coords, side)
+function stationutil.HasTrack(result, coords, side)
     local neighbour = result.GetModuleAt(coords[1] + side, coords[2])
     return neighbour and neighbour.metadata and neighbour.metadata.track
 end
@@ -55,7 +83,7 @@ end
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@return boolean
-function stationUtil.HasRoofNext(result, coords)
+function stationutil.HasRoofNext(result, coords)
     local i = coords[1]
     local j = coords[2]
     if not result.GetRoofAt(i, j - 1) then
@@ -71,7 +99,7 @@ end
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@return boolean
-function stationUtil.HasRoofPrevious(result, coords)
+function stationutil.HasRoofPrevious(result, coords)
     local i = coords[1]
     local j = coords[2]
     if not result.GetRoofAt(i, j + 1) then
@@ -89,7 +117,7 @@ end
 ---@param result table result provided in updateFn()
 ---@param coords table coords provided in updateFn()
 ---@return float
-function stationUtil.ResolvePlatformHeight(result, coords)
+function stationutil.ResolvePlatformHeight(result, coords)
     local parent = result.GetModuleAt(coords[1], coords[2])
     if parent and parent.metadata and parent.metadata.platformlevel then
         return parent.metadata.platformlevel / 100 + 0.53
@@ -102,9 +130,10 @@ end
 ---@param result table result provided in updateFn()
 ---@param slotId integer slotId of the module to remove assets from
 ---@return void
-function stationUtil.RemoveExistingAssets(result, slotId)
+function stationutil.RemoveExistingAssets(result, slotId)
     local assetsToRemove = {
         "street/street_light_eu_a.mdl", 
+        "street/street_light_us_a.mdl",
         "street/street_asset_mix/trash_standing_a.mdl",
         "station/rail/asset/era_a_double_chair.mdl", 
         "station/rail/asset/era_a_holder_wall.mdl",
@@ -112,10 +141,20 @@ function stationUtil.RemoveExistingAssets(result, slotId)
         "station/rail/asset/era_a_perron_number.mdl",
         "station/rail/asset/era_a_station_name.mdl", 
         "station/rail/asset/era_a_small_clock.mdl",
+        "station/rail/asset/era_b_sign_nr_l.mdl",
+        "station/rail/asset/era_b_sign_nr_r.mdl",
+        "station/rail/asset/era_b_trashcan.mdl",
+        "station/rail/asset/era_b_name_board.mdl",
+        "station/rail/asset/era_b_double_chair.mdl",
         "station/rail/lennardo97_platforms/asset/sign_era_a_name.mdl",
-        "station/rail/lennardo97_platforms/asset/sign_era_a_number.mdl"}
+        "station/rail/lennardo97_platforms/asset/sign_era_b_name.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_c_name.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_a_number.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_b_number.mdl",
+        "station/rail/lennardo97_platforms/asset/sign_era_c_number.mdl",
+    }
 
-    local moduleId = stationUtil.FindModuleForSlot(result, slotId)
+    local moduleId = stationutil.FindModuleForSlot(result, slotId)
 
     result.models = core.Map(result.models, function(x)
         if (x.tag == "__module_" .. moduleId and (core.Some(assetsToRemove, function(a)
@@ -140,13 +179,13 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddPlatformNumberSigns(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddPlatformNumberSigns(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
-
-    local leftTrack = stationUtil.HasTrack(result, coords, -1)
-    local rightTrack = stationUtil.HasTrack(result, coords, 1)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+    
+    local leftTrack = stationutil.HasTrack(result, coords, -1)
+    local rightTrack = stationutil.HasTrack(result, coords, 1)
 
     local num1 = #result.models
     result.addPlatformCallback(i, j, function(left, n, station)
@@ -159,7 +198,6 @@ function stationUtil.AddPlatformNumberSigns(result, coords, tag, offsetX, offset
             result.labelText[num1 + 0] = {ns, ns}
         end
     end)
-
 
     if(leftTrack) then
         core.Add(result.models, {
@@ -185,10 +223,17 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddStationNameSign(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddStationNameSign(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+
+    local era = stationutil.ResolveEra(result, coords)
+    local models = {
+        a = { mdl = "station/rail/asset/era_a_station_name.mdl", scale = { x = 1, y = 1, z = 1 }},
+        b = { mdl = "station/rail/asset/era_b_name_board.mdl", scale = { x = 0.7, y = 1, z = 0.7 }},
+        c = { mdl = "station/rail/asset/era_a_station_name.mdl", scale = { x = 1, y = 1, z = 1 }}
+    }
 
     local num1 = #result.models
     result.addPlatformCallback(i, j, function(left, n, station)
@@ -197,10 +242,36 @@ function stationUtil.AddStationNameSign(result, coords, tag, offsetX, offsetY, o
     end)
 
     core.Add(result.models, {
-        id = "station/rail/asset/era_a_station_name.mdl",
+        id = models[era].mdl,
         tag = tag,
-        transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        transf = transf.mul({0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}, transf.scale(models[era].scale))
     })
+end
+
+---Adds holder for central clock
+---@param result table result provided in updateFn()
+---@param slotId table coordinates of the module
+---@param tag string
+---@param offsetX float x-distance from center of platform 
+---@param offsetY float y-distance from center of platform 
+---@param offsetZ float z-distance from platform surface
+---@return void
+function stationutil.AddClockHolder(result, coords, tag, offsetX, offsetY, offsetZ)
+    local i = coords[1]
+    local j = coords[2]
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+
+    core.Add(result.models, {
+        id = "station/rail/asset/era_a_holder_wall.mdl",
+        tag = tag,
+        transf = { -0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1 },
+      })
+
+    core.Add(result.models, {
+        id = "station/rail/asset/era_a_holder_wall.mdl",
+        tag = tag,
+        transf = { 0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1 },
+      })
 end
 
 ---Adds clock
@@ -211,10 +282,10 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddClock(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddClock(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
 
     core.Add(result.models, {
         id = "station/rail/asset/era_a_small_clock.mdl",
@@ -231,25 +302,17 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddClocks(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddClocks(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
 
-    if(stationUtil.HasTrack(result, coords, 1)) then
-        core.Add(result.models, {
-            id = "station/rail/asset/era_a_small_clock.mdl",
-            tag = tag,
-            transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
-        })
+    if(stationutil.HasTrack(result, coords, 1)) then
+        stationutil.AddClock(result, coords, tag, offsetX, offsetY, offsetZ)
     end
 
-    if(stationUtil.HasTrack(result, coords, -1)) then
-        core.Add(result.models, {
-            id = "station/rail/asset/era_a_small_clock.mdl",
-            tag = tag,
-            transf = {-0.8, 0, 0, 0, 0, -0.8, 0, 0, 0, 0, 0.8, 0, (5 * i) - offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
-        })
+    if(stationutil.HasTrack(result, coords, -1)) then
+        stationutil.AddClock(result, coords, tag, -offsetX, offsetY, offsetZ)
     end
 end
 
@@ -261,13 +324,20 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddTrashCan(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddTrashCan(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+
+    local era = stationutil.ResolveEra(result, coords)
+    local models = {
+        a = "street/street_asset_mix/trash_standing_a.mdl",
+        b = "station/rail/asset/era_b_trashcan.mdl",
+        c = "street/street_asset_mix/trash_standing_a.mdl"
+    }
 
     core.Add(result.models, {
-        id = "street/street_asset_mix/trash_standing_a.mdl",
+        id = models[era],
         tag = tag,
         transf = {0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
     })
@@ -281,52 +351,99 @@ end
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
 ---@return void
-function stationUtil.AddBench(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddBench(result, coords, tag, offsetX, offsetY, offsetZ)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords)
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords)
+
+    local era = stationutil.ResolveEra(result, coords)
+    local models = {
+        a = { mdl = "station/rail/asset/era_a_double_chair.mdl", rot = 0 },
+        b = { mdl = "station/rail/asset/era_b_double_chair.mdl", rot = 90 },
+        c = { mdl = "station/rail/asset/era_a_double_chair.mdl", rot = 0 }
+    }
 
     core.Add(result.models, {
-        id = "station/rail/asset/era_a_double_chair.mdl",
+        id = models[era].mdl,
         tag = tag,
-        transf = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
+        transf = transf.mul({1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}, transf.rotZ(math.rad(models[era].rot)))
     })
 end
 
----Adds the butterfly-shaped roof
+---Adds the "Grünau" roof
 ---@param result table result provided in updateFn()
 ---@param slotId table coordinates of the module
 ---@param tag string
 ---@param offsetX float x-distance from center of platform 
 ---@param offsetY float y-distance from center of platform 
 ---@param offsetZ float z-distance from platform surface
+---@param roofWidth float width of the roof
 ---@return void
-function stationUtil.AddButterflyRoof(result, coords, tag, offsetX, offsetY, offsetZ)
+function stationutil.AddRoofGruenau(result, coords, tag, offsetX, offsetY, offsetZ, roofWidth)
     local i = coords[1]
     local j = coords[2]
-    local platformHeight = stationUtil.ResolvePlatformHeight(result, coords) - 0.53
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords) - 0.53
+
+    local factor = roofWidth/5
 
     core.Add(result.models, {
-        id = "station/rail/jan/butterfly_roof.mdl",
+        id = "station/rail/jan/roof_gruenau.mdl",
+        tag = tag,
+        transf = transf.mul({1, 0, 0, 0, -0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}, transf.scale({x=factor, y=1, z=1}))
+    })
+
+    if not stationutil.HasRoofNext(result, coords) then
+        core.Add(result.models, {
+            id = "station/rail/jan/roof_gruenau_end.mdl",
+            tag = tag,
+            transf = transf.mul({-1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}, transf.scale({x=factor, y=1, z=1}))
+        })
+    end
+
+    if not stationutil.HasRoofPrevious(result, coords) then
+        core.Add(result.models, {
+            id = "station/rail/jan/roof_gruenau_end.mdl",
+            tag = tag,
+            transf = transf.mul({1, 0, 0, 0, -0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}, transf.scale({x=factor, y=1, z=1}))
+        })
+    end
+end
+
+---Adds the "Schöneweide" roof
+---@param result table result provided in updateFn()
+---@param slotId table coordinates of the module
+---@param tag string
+---@param offsetX float x-distance from center of platform 
+---@param offsetY float y-distance from center of platform 
+---@param offsetZ float z-distance from platform surface
+---@param roofWidth float width of the roof
+---@return void
+function stationutil.AddRoofSchoeneweide(result, coords, tag, offsetX, offsetY, offsetZ, roofWidth)
+    local i = coords[1]
+    local j = coords[2]
+    local platformHeight = stationutil.ResolvePlatformHeight(result, coords) - 0.53
+
+    core.Add(result.models, {
+        id = "station/rail/jan/roof_schoeneweide_"..roofWidth..".mdl",
         tag = tag,
         transf = {1, 0, 0, 0, -0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
     })
 
-    if not stationUtil.HasRoofNext(result, coords) then
+    if not stationutil.HasRoofNext(result, coords) then
         core.Add(result.models, {
-            id = "station/rail/jan/butterfly_roof_end.mdl",
+            id = "station/rail/jan/roof_schoeneweide_"..roofWidth.."_end.mdl",
             tag = tag,
             transf = {-1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
         })
     end
 
-    if not stationUtil.HasRoofPrevious(result, coords) then
+    if not stationutil.HasRoofPrevious(result, coords) then
         core.Add(result.models, {
-            id = "station/rail/jan/butterfly_roof_end.mdl",
+            id = "station/rail/jan/roof_schoeneweide_"..roofWidth.."_end.mdl",
             tag = tag,
             transf = {1, 0, 0, 0, -0, 1, 0, 0, 0, 0, 1, 0, (5 * i) + offsetX, (40 * j) + offsetY, platformHeight + offsetZ, 1}
         })
     end
 end
 
-return stationUtil
+return stationutil

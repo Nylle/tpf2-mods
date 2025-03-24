@@ -179,6 +179,8 @@ return {
 		},
 
 	de = {
+		["Brick"] = "Ziegel",
+
 		["info_name"] = "Berlin Stadtbahn Viadukt Eeasy Bastelset - Basis Segmente",
 		["info_desc"] = "Icemaster präsentiert: 4 Gleise Viadukt Bauhilfe\n + Assets, Bahnhöfe, Depots und vieles mehr\n + verfügbar ab 1882",
 				
@@ -357,8 +359,5 @@ return {
 		["name_ending3"] = "-",
 		
 		},
-
-
-
 	}
 end

@@ -1,0 +1,99 @@
+local transf = require "transf"
+local vec3 = require "vec3"
+local modulesutil = require "modulesutil"
+
+function data()
+    return {
+        type = "ASSET_TRACK",
+        description = {
+            name = _("Platform Roof \"Grünau\""),
+            description = _("Platform roof \"Grünau\" for passenger platforms."),
+            icon = "ui/construction/station/rail/jan/roof_gruenau_ui.tga"
+        },
+        availability = {
+            yearFrom = 0
+        },
+        categories = {"Jan Assets"},
+        order = 805,
+        skipCollision = true,
+        autoRemovable = false,
+        cost = {
+            price = 0
+        },
+
+        params = {{
+            key = "platformHeight",
+            name = _("Platform Height (height above track level)"),
+            values = {_("0"), _("0.8 (vanilla)"), _("0.91 (380 mm)"), _("1.08 (550 mm)"), _("1.29 (760 mm)"), _("1.49 (960 mm)")},
+            defaultIndex = 0
+        },{
+            key = "roofWidth",
+            name = _("Roof Width (m)"),
+            values = {_("5"), _("6")},
+            defaultIndex = 0
+        },{
+            key = "addStart",
+            name = _("Roof Start"),
+            uiType = "CHECKBOX",
+            values = {"0", "1"},
+            defaultIndex = 1
+        },{
+            key = "addEnd",
+            name = _("Roof End"),
+            uiType = "CHECKBOX",
+            values = {"0", "1"},
+            defaultIndex = 1
+        },{
+            key = "addRoof",
+            name = _("Roof"),
+            uiType = "CHECKBOX",
+            values = {"0", "1"},
+            defaultIndex = 1
+        }},
+
+        updateFn = function(params, result, transform)
+            local result = {}
+            local edges = {}
+            result.models = {}
+            result.edgeLists = {}
+
+            local roofWidths = { 5, 6 }
+            local scaleX = roofWidths[params.roofWidth+1]/5
+            local scaleY = 1
+            local scaleZ = 1
+
+            local platformHeights = { 0, 0.8, 0.91, 1.08, 1.29, 1.49 }
+            local offsetX = 0
+            local offsetY = 5
+            local offsetZ = platformHeights[params.platformHeight+1]
+
+            if(params.addRoof == 1) then
+                result.models[#result.models + 1] = {
+                    id = "station/rail/jan/roof_gruenau.mdl",
+                    transf = transf.scaleXYZRotZTransl(vec3.new(scaleX, scaleY, scaleZ), math.rad(90), vec3.new(offsetX, offsetY, offsetZ))
+                }
+            end
+            
+            if(params.addStart == 1) then
+                result.models[#result.models + 1] = {
+                    id = "station/rail/jan/roof_gruenau_end.mdl",
+                    transf = transf.scaleXYZRotZTransl(vec3.new(scaleX, scaleY, scaleZ), math.rad(90), vec3.new(offsetX, offsetY, offsetZ))
+                }
+            end
+
+            if(params.addEnd == 1) then
+                result.models[#result.models + 1] = {
+                    id = "station/rail/jan/roof_gruenau_end.mdl",
+                    transf = transf.scaleXYZRotZTransl(vec3.new(scaleX, scaleY, scaleZ), math.rad(270), vec3.new(offsetX, offsetY, offsetZ))
+                }
+            end
+
+            result.terrainAlignmentLists = {{
+                type = "EQUAL",
+                faces = {}
+            }}
+
+            return result
+        end
+    }
+end
